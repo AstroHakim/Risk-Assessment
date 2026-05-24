@@ -1,0 +1,1587 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Risk Assessment</title>
+<meta name="description" content="QR landing page for mission risk assessment." />
+<style>
+:root {
+  --bg:#f4f7fb;
+  --panel:#ffffff;
+  --ink:#172033;
+  --muted:#667085;
+  --line:#e6ebf2;
+  --accent:#251A5E;
+  --accent-2:#F3970E;
+  --soft:rgba(37,26,94,.08);
+  --soft-2:rgba(243,151,14,.10);
+  --shadow:0 18px 50px rgba(23,32,51,.10);
+  --radius:24px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at top left,rgba(37,26,94,.14),transparent 34rem),
+    radial-gradient(circle at top right,rgba(243,151,14,.12),transparent 30rem),
+    var(--bg);
+  line-height:1.45;
+}
+a{color:inherit}
+.page{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:28px 0 56px}
+header.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:stretch;margin-bottom:24px}
+.hero-card,.quick-card,.datasheet,.risk-card,.kpi,.summary-table-wrap{
+  background:rgba(255,255,255,.86);
+  border:1px solid rgba(230,235,242,.9);
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(10px);
+  border-radius:var(--radius);
+}
+.hero-card{
+  padding:clamp(24px,5vw,44px);
+  min-height:310px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  overflow:hidden;
+  position:relative;
+}
+.hero-card::after{
+  content:"RISK";
+  position:absolute;
+  right:-10px;
+  bottom:-44px;
+  font-size:clamp(92px,17vw,180px);
+  font-weight:900;
+  color:rgba(37,26,94,.055);
+  letter-spacing:-.08em;
+  pointer-events:none;
+}
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  width:fit-content;
+  color:var(--accent-2);
+  background:rgba(243,151,14,.10);
+  border:1px solid rgba(243,151,14,.18);
+  border-radius:999px;
+  padding:8px 12px;
+  font-size:13px;
+  font-weight:750;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+h1{
+  color:var(--accent);
+  margin:20px 0 10px;
+  font-size:clamp(38px,7vw,72px);
+  line-height:.95;
+  letter-spacing:-.06em;
+  max-width:760px;
+}
+.subtitle{margin:0;color:var(--muted);font-size:clamp(16px,2.4vw,20px);max-width:660px}
+.meta-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px;position:relative;z-index:1}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:10px 13px;border-radius:999px;background:#fff;border:1px solid var(--line);color:#344054;font-weight:650;font-size:14px}
+.quick-card{padding:22px;display:flex;flex-direction:column;justify-content:space-between;gap:18px}
+.quick-card h2{font-size:22px;margin:0 0 8px;letter-spacing:-.03em;color:var(--accent)}
+.quick-card p{margin:0;color:var(--muted)}
+.nav-grid{display:grid;gap:12px;margin-top:18px}
+.nav-link{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:16px;text-decoration:none;background:#fff;border:1px solid var(--line);border-radius:18px;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.nav-link:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(23,32,51,.10);border-color:rgba(243,151,14,.35)}
+.nav-link strong{display:block}
+.nav-link span span{color:var(--muted);font-size:13px}
+.arrow{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:var(--soft);color:var(--accent);font-weight:900;flex:0 0 auto}
+main{display:grid;gap:24px}
+.overview{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.kpi{box-shadow:none;padding:18px;border-radius:20px;background:rgba(255,255,255,.92)}
+.kpi span{display:block;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:800}
+.kpi strong{display:block;color:var(--accent);font-size:30px;line-height:1.1;margin-top:6px}
+.summary-table-wrap{overflow:auto;padding:20px}
+.summary-table-wrap h2{margin:0 0 14px;color:var(--accent);font-size:24px}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:860px}
+th,td{padding:12px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--accent);font-size:12px;text-transform:uppercase;letter-spacing:.08em;background:rgba(37,26,94,.035)}
+.datasheet{overflow:hidden;border-top:3px solid rgba(243,151,14,.55)}
+.sheet-head{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:start;padding:clamp(22px,4vw,34px);border-bottom:1px solid var(--line)}
+.datasheet h2{color:var(--accent);margin:0;font-size:clamp(28px,4.2vw,42px);letter-spacing:-.05em}
+.model{margin:8px 0 0;color:var(--muted);font-size:17px}
+.scorebox{min-width:160px;padding:16px 18px;border-radius:20px;background:linear-gradient(145deg,#fff,var(--soft));border:1px solid rgba(37,26,94,.14);text-align:right}
+.scorebox small{display:block;color:var(--muted);font-weight:700;margin-bottom:2px}
+.scorebox strong{font-size:28px;letter-spacing:-.04em;color:var(--accent)}
+.sheet-body.single{padding:clamp(20px,3.6vw,32px);display:grid;gap:26px}
+.risk-section h3{margin:0 0 16px;font-size:15px;color:#344054;text-transform:uppercase;letter-spacing:.10em}
+.risk-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.risk-card{box-shadow:none;padding:16px;border-radius:20px;background:rgba(255,255,255,.95);position:relative;overflow:hidden;border-left:7px solid #9ca3af}
+.risk-card.very-low{border-left-color:#22c55e}
+.risk-card.low{border-left-color:#eab308}
+.risk-card.medium{border-left-color:#f97316}
+.risk-card.high{border-left-color:#dc2626}
+
+
+
+
+
+.risk-top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px}
+.risk-id{font-size:12px;font-weight:850;color:var(--accent);background:rgba(243,151,14,.12);border-radius:999px;padding:6px 9px;white-space:nowrap}
+.risk-level{font-size:12px;font-weight:850;border-radius:999px;padding:6px 9px;background:rgba(37,26,94,.08);color:var(--accent);white-space:nowrap}
+.risk-card h4{margin:0 0 12px;font-size:17px;line-height:1.25;color:#172033}
+.risk-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.risk-meta span{display:block;border:1px solid var(--line);border-radius:14px;padding:9px;background:rgba(37,26,94,.025);font-weight:750}
+.risk-meta b{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
+.mitigation{border-top:1px solid var(--line);padding-top:12px}
+.mitigation strong,.note strong{color:var(--accent)}
+.mitigation p{margin:6px 0 0;color:#344054}
+.note{margin-top:10px;padding:10px 12px;border-radius:14px;background:rgba(243,151,14,.08);color:#344054}
+.legend{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:16px}
+.legend span{display:flex;align-items:center;gap:8px;font-size:13px;color:#344054}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--accent-2)}
+footer{margin-top:28px;color:var(--muted);text-align:center;font-size:14px}
+@media(max-width:980px){
+  .overview{grid-template-columns:repeat(3,1fr)}
+  .risk-grid{grid-template-columns:1fr}
+}
+@media(max-width:860px){
+  .page{width:min(100% - 22px,720px);padding-top:12px}
+  header.hero,.sheet-head{grid-template-columns:1fr}
+  .hero-card{min-height:280px}
+  .scorebox{text-align:left;min-width:auto}
+  .overview{grid-template-columns:repeat(2,1fr)}
+  .risk-meta{grid-template-columns:1fr}
+  .legend{grid-template-columns:1fr 1fr}
+}
+@media print{
+  body{background:#fff}
+  .hero-card,.quick-card,.datasheet,.risk-card,.kpi,.summary-table-wrap{box-shadow:none}
+  .nav-link:hover{transform:none;box-shadow:none}
+}
+</style>
+</head>
+<body>
+<div class="page">
+<header class="hero">
+  <section class="hero-card" aria-labelledby="page-title">
+    <div>
+      <span class="eyebrow">Risk Assessment</span>
+      <h1 id="page-title">Mission Risk Register</h1>
+      <p class="subtitle">QR-friendly overview of subsystem risks, probability, severity, PxS level, mitigation actions and notes.</p>
+    </div>
+    <div class="meta-row" aria-label="Presentation metadata">
+      <span class="pill">Preliminary Design Review</span>
+      <span class="pill">May 2026</span>
+      <span class="pill">81 total risks</span>
+    </div>
+  </section>
+
+  <aside class="quick-card" aria-labelledby="quick-title">
+    <div>
+      <h2 id="quick-title">Quick access</h2>
+      <p>Jump directly to each subsystem risk register.</p>
+      <nav class="nav-grid" aria-label="Risk register navigation">
+        <a class="nav-link" href="#adcs">
+      <span><strong>ADCS</strong><span>21 risks · 2 sections</span></span>
+      <span class="arrow">↓</span>
+    </a>
+<a class="nav-link" href="#eps">
+      <span><strong>EPS</strong><span>15 risks · 1 sections</span></span>
+      <span class="arrow">↓</span>
+    </a>
+<a class="nav-link" href="#ttc-and-gnss">
+      <span><strong>TTC &amp; GNSS</strong><span>21 risks · 4 sections</span></span>
+      <span class="arrow">↓</span>
+    </a>
+<a class="nav-link" href="#prop">
+      <span><strong>PROP</strong><span>19 risks · 2 sections</span></span>
+      <span class="arrow">↓</span>
+    </a>
+<a class="nav-link" href="#thermo-struc">
+      <span><strong>THERMO_STRUC</strong><span>5 risks · 1 sections</span></span>
+      <span class="arrow">↓</span>
+    </a>
+      </nav>
+    </div>
+  </aside>
+</header>
+
+<main>
+  <section class="overview" aria-label="Risk overview">
+    <div class="kpi">
+      <span>Total risks</span>
+      <strong>81</strong>
+    </div>
+<div class="kpi">
+      <span>Mission</span>
+      <strong>41</strong>
+    </div>
+<div class="kpi">
+      <span>Technical</span>
+      <strong>24</strong>
+    </div>
+<div class="kpi">
+      <span>Safety</span>
+      <strong>8</strong>
+    </div>
+<div class="kpi">
+      <span>Personnel</span>
+      <strong>5</strong>
+    </div>
+<div class="kpi">
+      <span>Environment</span>
+      <strong>3</strong>
+    </div>
+  </section>
+
+  <section class="summary-table-wrap">
+    <h2>Risk statistics</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Subsystem</th><th>Mission</th><th>%</th><th>Technical</th><th>%</th><th>Safety</th><th>Personnel</th><th>Environment</th><th>Very Low</th><th>Low</th><th>Medium</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+      <td>GNSS&amp;TTC</td>
+      <td>12</td>
+      <td>29.3%</td>
+      <td>6</td>
+      <td>26.1%</td>
+      <td>2</td>
+      <td>1</td>
+      <td>0</td>
+      <td>5</td>
+      <td>14</td>
+      <td>1</td>
+    </tr>
+<tr>
+      <td>ADCS</td>
+      <td>11</td>
+      <td>26.8%</td>
+      <td>5</td>
+      <td>21.7%</td>
+      <td>2</td>
+      <td>2</td>
+      <td>1</td>
+      <td>6</td>
+      <td>14</td>
+      <td>1</td>
+    </tr>
+<tr>
+      <td>PROP</td>
+      <td>7</td>
+      <td>17.1%</td>
+      <td>6</td>
+      <td>26.1%</td>
+      <td>3</td>
+      <td>2</td>
+      <td>1</td>
+      <td>5</td>
+      <td>13</td>
+      <td>1</td>
+    </tr>
+<tr>
+      <td>EPS</td>
+      <td>8</td>
+      <td>19.5%</td>
+      <td>4</td>
+      <td>17.4%</td>
+      <td>2</td>
+      <td>0</td>
+      <td>1</td>
+      <td>2</td>
+      <td>10</td>
+      <td>3</td>
+    </tr>
+<tr>
+      <td>STRUCTURE</td>
+      <td>3</td>
+      <td>7.3%</td>
+      <td>2</td>
+      <td>8.7%</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>2</td>
+      <td>3</td>
+      <td>0</td>
+    </tr>
+      </tbody>
+    </table>
+    <div class="legend">
+      <span><i class="dot" style="background:#22c55e"></i>Very Low</span>
+      <span><i class="dot" style="background:#eab308"></i>Low</span>
+      <span><i class="dot" style="background:#f97316"></i>Medium</span>
+      <span><i class="dot" style="background:#b42318"></i>High</span>
+      <span><i class="dot" style="background:rgba(37,26,94,.08)"></i>Unclassified</span>
+    </div>
+  </section>
+
+  <article class="datasheet" id="adcs">
+      <div class="sheet-head">
+        <div>
+          <h2>ADCS</h2>
+          <p class="model">21 identified risks · grouped by subsystem area</p>
+        </div>
+        <div class="scorebox">
+          <small>Risk count</small>
+          <strong>21</strong>
+        </div>
+      </div>
+      <div class="sheet-body single">
+        <section class="risk-section">
+      <h3>ATTITUDE DETERMINATION</h3>
+      <div class="risk-grid">
+        <article class="risk-card very-low">
+      <div class="risk-top">
+        <span class="risk-id">MS10</span>
+        <span class="risk-level">Very low</span>
+      </div>
+      <h4>Accelerometer sensor electronics fails during operative mission phase</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>1</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Space qualified component<br>- Redundancy</p></div>
+      <div class="note"><strong>Note:</strong> Electronics can be damaged by radiation, but our orbital environment ensures no dangerous exposure to radiation</div>
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS20</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Gyroscope sensor electronics damaged during launch phase due to high accelerations</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Space grade components tested to withstand vibrations</p></div>
+      <div class="note"><strong>Note:</strong> RLG mirrors misaligment caused by vibrations/shock</div>
+      
+    </article><article class="risk-card very-low">
+      <div class="risk-top">
+        <span class="risk-id">MS30</span>
+        <span class="risk-level">Very low</span>
+      </div>
+      <h4>Gyroscope sensor electronics fails during operative mission phase</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>1</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Space qualified components<br>- Redundancy</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS40</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Star sensor electronics fails</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Space qualified components</p></div>
+      <div class="note"><strong>Note:</strong> This failure is related to the sensor it-self or to radiation exposure</div>
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS50</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Star sensor shielding mechanism fails, thus star sensor optics is damaged by dust or radiations.</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Space qualified components</p></div>
+      <div class="note"><strong>Note:</strong> The shield mechanism is a moving part, thus the high probability of failure BUT being space graded is stressfully tested for on-orbit environment.</div>
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS60</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Sun sensor electronics fails</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Space qualified components</p></div>
+      <div class="note"><strong>Note:</strong> The high severity is related to the fact that the star sensor relies on this instrument for the shielding to be activated (it is a fine sun sensor,thus CCD or CMOS is the sensible part)</div>
+      
+    </article><article class="risk-card very-low">
+      <div class="risk-top">
+        <span class="risk-id">TC10</span>
+        <span class="risk-level">Very low</span>
+      </div>
+      <h4>Star sensor’s misalignment due to erroneous mounting</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Technical</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Precise procedure to be strictly followed during on-ground assembly and integration phases</p></div>
+      <div class="note"><strong>Note:</strong> Misalignment leads to error in attitude determination (reason for high severity)</div>
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">EN10</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>RLG gas leakeage (degradation over time, launch vibrations correlated damages)</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Environment</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Space qualified components</p></div>
+      
+      
+    </article>
+      </div>
+    </section><section class="risk-section">
+      <h3>ATTITUDE CONTROL</h3>
+      <div class="risk-grid">
+        <article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS70</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>RW mechanical failure (bearings wear, friction increase, seizure) causing performance degradation (reduced toques, increased jitter)</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>C</span>
+        <span><b>Severity</b>3</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Choose a RW with high operational life <br>- Space qualified components <br>- High-reliability bearings <br>- Conservative operational envelope (limit speed/torque) <br>- Redundancy <br>- Stressfull testing (development, acceptance and qualification tests)</p></div>
+      <div class="note"><strong>Note:</strong> Probability of occurance is not so low, RWs are known to undergo failures so modern design are getting better to prevent this situation</div>
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS80</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>RW electronic failure (short circuits in winding, open circuit, power supply failure) causing performance degradation (reduced toques, increased jitter)</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>C</span>
+        <span><b>Severity</b>3</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Space qualified components <br>- Radiation-hardened electronics <br>- Current and temperature monitoring with auto shutdown <br>- Redundancy</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS90</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>RW electronic failure due to overheating causing performance degradation (reduced toques, increased jitter)</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Space qualified components <br>- Thermal control (radiators, thermalstraps) <br>- Radiation-hardened electronics <br>- Current and temperature monitoring with auto shutdown <br>- Redundancy</p></div>
+      <div class="note"><strong>Note:</strong> Electronics can be burned out by harsh environment</div>
+      
+    </article><article class="risk-card medium">
+      <div class="risk-top">
+        <span class="risk-id">MS100</span>
+        <span class="risk-level">Medium</span>
+      </div>
+      <h4>Multiple RWs failure causing loss of 3-axis control</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>5</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Redundancy <br>- Physical separation of the wheels to avoid a common failure (tetrahedral configuration) <br>- Vibrations isolation (dampers)</p></div>
+      <div class="note"><strong>Note:</strong> It’s not so common but unfortunately can happen, an example could be “Kepler Space Telescope” and it lost primary mission capability</div>
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">TC20</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>RW saturation/inefficiency (momentum dumping)</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Technical</span>
+        <span><b>Probability</b>C</span>
+        <span><b>Severity</b>3</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Integration of a desaturation loop with ADCS thrusters in the actuator plant <br>- Regular and planned momentum dumping strategy <br>- Conservative RW operational limits</p></div>
+      <div class="note"><strong>Note:</strong> Even with mitigation, momentum accumulation is expected during long mission operations. However, having actions to activate to desaturate, the severity is not extremely high.</div>
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">SF10</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>RW structural failure during test campaign (e.g.burst at high speed)</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Safety</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Spin testing in protected environments (example: vacuum chambers with shielding) <br>- Over-speed protection</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">PE10</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Injury during handling/integration (heavy rotating assembly)</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Personnel</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Use of DPI and support equipment <br>- Locking mechanisms to prevent undesired rotation <br>- Rigid procedure to follow to ensure safety<br>- Trained personnel to handle the assembly</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS110</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Control software fails in sending command to actuators (comunication loss, logic bug, crash)</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>5</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Robust algorithm (stable to changes of operational conditions)<br>- Safe control law<br>- Redundant communication channels between components <br>- Watchdog timer to reveal anomalies, to apply reset mechanisms</p></div>
+      <div class="note"><strong>Note:</strong> It’s an hard failure that leads to an immediate loss of actuation (need fast autonomous recovery). For this reason are developed multiple mitigation actions that prevents this to happen and slow down the probability.</div>
+      
+    </article><article class="risk-card very-low">
+      <div class="risk-top">
+        <span class="risk-id">TC30</span>
+        <span class="risk-level">Very low</span>
+      </div>
+      <h4>Controller radiation-induced upset (SEU, latch-up)</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Technical</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>3</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Effective shielding for electronics <br>- Periodic memory scrubbing (detect and correct errors) <br>- Use of rad-hard components</p></div>
+      <div class="note"><strong>Note:</strong> Typically transient (recoverable). Severity is not high.</div>
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">TC40</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Controller partial degradation (send incorrect commands, saturation issues)</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Technical</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>3</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Robust control algorithms <br>- Saturation logic implemented <br>- Continuous telemetry monitoring</p></div>
+      <div class="note"><strong>Note:</strong> Often subtle and hard to detect. It degradates pointing accuracy over time.</div>
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">TC50</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Controller power electronics / driver failure</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Technical</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Over current and thermal protection implemented <br>- Derating of components (working far from maximum value)</p></div>
+      <div class="note"><strong>Note:</strong> Typically localized but can disable one or more actuators</div>
+      
+    </article><article class="risk-card very-low">
+      <div class="risk-top">
+        <span class="risk-id">PE20</span>
+        <span class="risk-level">Very low</span>
+      </div>
+      <h4>Electrical hazard during integration/testing</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Personnel</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Proper grounding and insulation <br>- Precise procedures to follow to assembly/integrate<br>- Trained personnel only</p></div>
+      
+      
+    </article><article class="risk-card very-low">
+      <div class="risk-top">
+        <span class="risk-id">SF20</span>
+        <span class="risk-level">Very low</span>
+      </div>
+      <h4>Incorrect command leading to potentially dangerous system behavior during test (for personell or sorrounding environment)</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Safety</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>3</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Precide procedures to follow during tests<br>- Command validation and safety checks <br>- Safe test configurations</p></div>
+      
+      
+    </article>
+      </div>
+    </section>
+      </div>
+    </article>
+<article class="datasheet" id="eps">
+      <div class="sheet-head">
+        <div>
+          <h2>EPS</h2>
+          <p class="model">15 identified risks · grouped by subsystem area</p>
+        </div>
+        <div class="scorebox">
+          <small>Risk count</small>
+          <strong>15</strong>
+        </div>
+      </div>
+      <div class="sheet-body single">
+        <section class="risk-section">
+      <h3>EPS</h3>
+      <div class="risk-grid">
+        <article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">TC60</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Hypervelocity impacts (MMOD Strike) shatter individual coverglasses or several vital interconnect wire.</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Technical</span>
+        <span><b>Probability</b>C</span>
+        <span><b>Severity</b>2</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Highly parallelized circuit topologies (multiple short strings rather than fewer long strings) so losing a localized area doesn&#x27;t drop the whole array&#x27;s voltage.</p></div>
+      <div class="note"><strong>Note:</strong> No dangerous debris environment in moon orbit</div>
+      
+    </article><article class="risk-card very-low">
+      <div class="risk-top">
+        <span class="risk-id">MS120</span>
+        <span class="risk-level">Very low</span>
+      </div>
+      <h4>Single Event Bornout: Heavy ions or cosmic rays trigger a destructive short circuit in power MOSFETs.</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Oversizing, using radiation-hardened components, high voltage/current derating (running loads well beload max ratings)</p></div>
+      <div class="note"><strong>Note:</strong> No dangerous radiation exposition in moon orbit</div>
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS130</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>SADA / SADM Mechanical Jam: The Solar Array Drive Assembly/Mechanism stalls, preventing the panels from sun-tracking.</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>3</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Redundant motor windings<br>- Dual-channel bearing systems<br>- &quot;Safe mode&quot; attitude profile that aligns the entire spacecraft bus to compensate for a fixed panel</p></div>
+      
+      
+    </article><article class="risk-card medium">
+      <div class="risk-top">
+        <span class="risk-id">MS140</span>
+        <span class="risk-level">Medium</span>
+      </div>
+      <h4>Mechanism sticking or dampener failure leaves panels stowed or partially deployed.</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>5</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- High mechanical margin in spring actuators<br>- Redundant burn-wire/pin-puller release mechanisms<br>- Operational maneuvers to shake free</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS150</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Battery Thermal Runaway: Internal short circuit or overcharging causes catastrophic heat release.</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>5</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Strict charge/discharge monitoring at the Battery Management System (BMS) level<br>- Independent hardware-level overvoltage cutoff switches</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">TC70</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Battery Capacity Fading: Repeated cycling (especially in low Earth orbit) reduces total Wh capacity.</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Technical</span>
+        <span><b>Probability</b>C</span>
+        <span><b>Severity</b>3</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Restricting the operational Depth of Discharge (DoD) to a conservative range<br>- Active cell balancing</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">TC80</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Solar Cell Degradation (Atomic Oxygen/Radiation): Space environment degrades power output over time faster than expected.</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Technical</span>
+        <span><b>Probability</b>D</span>
+        <span><b>Severity</b>2</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Over-sizing the solar array at Beginning of Life (BOL) to guarantee required End of Life (EOL) power<br>- Protective fused silica coverglass</p></div>
+      
+      
+    </article><article class="risk-card medium">
+      <div class="risk-top">
+        <span class="risk-id">MS160</span>
+        <span class="risk-level">Medium</span>
+      </div>
+      <h4>Shunt Regulator / PCU Failure: The Power Control Unit fails, causing either an unregulated high-voltage spike or loss of bus regulation.</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>5</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Redundant topology</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">TC90</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Solar Array Partial Shadowing: Spacecraft structure blocks sunlight, causing localized heating (hot spots) and string power loss.</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Technical</span>
+        <span><b>Probability</b>C</span>
+        <span><b>Severity</b>2</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Bypass diodes across cell strings to allow current to bypass shadowed sections<br>- Optimized attitude control maneuvers</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS170</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Electrolyte Leakage / Cell Venting: Vacuum exposure or internal pressure build-up causes a seal breach, venting toxic or corrosive gas inside the bus.</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Battery pack hermetically sealed<br>- Internal pressure relief mechanisms that direct vented gas away from sensitive avionics</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">EN20</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Electrolyte Leakage / Cell Venting: Vacuum exposure or internal pressure build-up causes a seal breach, releasing toxic or corrosive gas in the environment.</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Environment</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Battery pack hermetically sealed</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS180</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Structural Interconnect Failure: Launch vibrations and acoustic loads break the wire bonds or busbars connecting the cells together.</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>5</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Designed for high random vibration loads<br>- Potting cell matrix with space-grade silicone/epoxy<br>- Flexible wire bonding<br>- Cabling stressfully tested at subsystem and system-level against vibrations</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS190</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Heater Circuit Failure (Over-cooling): During eclipse, battery heaters fail to turn on, dropping temperatures below freezing thresholds where chemistry freezes.</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Fully redundant heater strings with independent thermostats<br>- Multi-layer insulation (MLI) blankets around the battery pack</p></div>
+      
+      
+    </article><article class="risk-card medium">
+      <div class="risk-top">
+        <span class="risk-id">TC100</span>
+        <span class="risk-level">Medium</span>
+      </div>
+      <h4>Reverse Biasing &quot;Hot Spot&quot; Destruction: Partial shadowing turns a shaded cell into a consumer of power rather than a producer, leading to localized overheating.</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Technical</span>
+        <span><b>Probability</b>C</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Bypass diodes in parallel with small groups of cells to provide an alternate low-resistance path for the string current when shaded</p></div>
+      <div class="note"><strong>Note:</strong> Image example:</div>
+      
+    </article><article class="risk-card very-low">
+      <div class="risk-top">
+        <span class="risk-id">SF70</span>
+        <span class="risk-level">Very low</span>
+      </div>
+      <h4>Battery pack explosion during TVAC/vibrational tests</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Safety</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>COTS component space graded</p></div>
+      
+      
+    </article>
+      </div>
+    </section>
+      </div>
+    </article>
+<article class="datasheet" id="ttc-and-gnss">
+      <div class="sheet-head">
+        <div>
+          <h2>TTC &amp; GNSS</h2>
+          <p class="model">21 identified risks · grouped by subsystem area</p>
+        </div>
+        <div class="scorebox">
+          <small>Risk count</small>
+          <strong>21</strong>
+        </div>
+      </div>
+      <div class="sheet-body single">
+        <section class="risk-section">
+      <h3>TTC</h3>
+      <div class="risk-grid">
+        <article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">TC110</span>
+        <span class="risk-level">low</span>
+      </div>
+      <h4>SSPA X-band (30W) overheating</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Technical</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>3</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Continuos monitoring of temperatures<br>- Thermal control system: implementation of dedicated heat pipes</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">TC120</span>
+        <span class="risk-level">low</span>
+      </div>
+      <h4>Signal loss due to aiming error during uplink</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Technical</span>
+        <span><b>Probability</b>C</span>
+        <span><b>Severity</b>3</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Using a “Safe mode” with low gain antenna for attitude resetting</p></div>
+      
+      
+    </article><article class="risk-card very-low">
+      <div class="risk-top">
+        <span class="risk-id">TC130</span>
+        <span class="risk-level">Very low</span>
+      </div>
+      <h4>SDR Single Event Upset</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Technical</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>2</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Watchdog timer for automatic reset</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS 200</span>
+        <span class="risk-level">low</span>
+      </div>
+      <h4>Emergency patch antenna (implemented in case of ADCS failure) fails</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>5</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Redundancy of patch antennas placed on opposite sides of the chassis</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS210</span>
+        <span class="risk-level">low</span>
+      </div>
+      <h4>Cyber Attack during Direct-with-Earth links</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>5</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>implementation of a crypto-graphic system</p></div>
+      
+      
+    </article><article class="risk-card very-low">
+      <div class="risk-top">
+        <span class="risk-id">SF80</span>
+        <span class="risk-level">Very low</span>
+      </div>
+      <h4>Antennas detachment during vibrational tests</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Safety</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Precise procedure to follow during tests to avoid damages to personnel or laboratorial environment.</p></div>
+      
+      
+    </article>
+      </div>
+    </section><section class="risk-section">
+      <h3>AFS generation and transmission (lunar-satellite GNSS)</h3>
+      <div class="risk-grid">
+        <article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS220</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>S-band antenna deployment fails</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>5</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Rigorous vibration qualification testing <br>- Continouos monitoring of deployment phase (check nominal deployment)<br>- Redundant release systems</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS230</span>
+        <span class="risk-level">low</span>
+      </div>
+      <h4>Atomic Clock Loss of Lock / Phase Jump</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Continuous monitoring of the RF cavity error loop telemetry<br>- Automatic initialization of the auxiliary crystal oscillator as a short-term holdover source while executing an atomic transition re-locking cycle</p></div>
+      
+      
+    </article><article class="risk-card very-low">
+      <div class="risk-top">
+        <span class="risk-id">TC140</span>
+        <span class="risk-level">Very low</span>
+      </div>
+      <h4>Multi Access Interference (MAI)</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Technical</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>2</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Rigorous power level planning to meet the maximum -147 dBW</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">TC150</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Thermal variations causes drifts in hardware delays in the transmission chain</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Technical</span>
+        <span><b>Probability</b>C</span>
+        <span><b>Severity</b>2</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Calibration of temperature-dependent delays during ground testing<br>- Continuous monitoring of temperature variations</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS240</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Data-Pilot Inconsistency</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Validating the phase of the I/Q channels at the SDR output</p></div>
+      <div class="note"><strong>Note:</strong> A timing misalignment between the AFS-I and AFS-Q channels could prevent correct user tracking.</div>
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS250</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Code-Carrier Inconsistency</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Using the Safran RAFS as an ultra-stable frequency reference to phase-lock both the code and the S-band carrier</p></div>
+      <div class="note"><strong>Note:</strong> The difference between the code phase and the carrier phase degrades the ranging accuracy.</div>
+      
+    </article>
+      </div>
+    </section><section class="risk-section">
+      <h3>Earth GNSS signal acquisition</h3>
+      <div class="risk-grid">
+        <article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS260</span>
+        <span class="risk-level">low</span>
+      </div>
+      <h4>Insufficient sensitivity for Earth GNSS acquisition</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>C</span>
+        <span><b>Severity</b>3</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Design choice of a high gain MDA antenna</p></div>
+      
+      
+    </article><article class="risk-card very-low">
+      <div class="risk-top">
+        <span class="risk-id">PE30</span>
+        <span class="risk-level">very low</span>
+      </div>
+      <h4>ESD damage during integration</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Personnel</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>3</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Strict grounding procedures for personell and satellite frames during assembly</p></div>
+      
+      
+    </article><article class="risk-card medium">
+      <div class="risk-top">
+        <span class="risk-id">MS270</span>
+        <span class="risk-level">Medium</span>
+      </div>
+      <h4>Excessive lunar multipath</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>D</span>
+        <span><b>Severity</b>3</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Applying elevation masks (cut-off angles)</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS271</span>
+        <span class="risk-level">low</span>
+      </div>
+      <h4>Excessive lunar multipath</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>3</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Applying elevation masks (cut-off angles) and multipath mitigation algorithms in firmware</p></div>
+      
+      
+    </article>
+      </div>
+    </section><section class="risk-section">
+      <h3>Intersat</h3>
+      <div class="risk-grid">
+        <article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS280</span>
+        <span class="risk-level">low</span>
+      </div>
+      <h4>Aiming Mechanism (APM) Stall</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Implementation of an autonomous recovery cycle with forced warm-up and RF ditherre acquisition</p></div>
+      
+      
+    </article><article class="risk-card medium">
+      <div class="risk-top">
+        <span class="risk-id">SF30</span>
+        <span class="risk-level">medium</span>
+      </div>
+      <h4>APM Structural damage during launch</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Safety</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>5</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Integration of a mechanical locking system (Launch Lock) that can be reset or is single-released to immobilize the APM joints</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS290</span>
+        <span class="risk-level">low</span>
+      </div>
+      <h4>ISL Dynamic Tracking Loss during Equatorial-to-HALO Handover</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>C</span>
+        <span><b>Severity</b>3</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Implementation of predictive pointing algorithms within the AOCS based on onboard stored ephemerides propagated via Kalman filters</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">TC160</span>
+        <span class="risk-level">low</span>
+      </div>
+      <h4>RF losses in APM moving joints</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Technical</span>
+        <span><b>Probability</b>C</span>
+        <span><b>Severity</b>3</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>High-performance vacuum lubricant selection and accelerated life testing on RF joints</p></div>
+      
+      
+    </article><article class="risk-card very-low">
+      <div class="risk-top">
+        <span class="risk-id">MS300</span>
+        <span class="risk-level">Very low</span>
+      </div>
+      <h4>Mutual interference in Ka-Band</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>2</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Rigorous planning of time slots coordinated from the ground.</p></div>
+      
+      
+    </article>
+      </div>
+    </section>
+      </div>
+    </article>
+<article class="datasheet" id="prop">
+      <div class="sheet-head">
+        <div>
+          <h2>PROP</h2>
+          <p class="model">19 identified risks · grouped by subsystem area</p>
+        </div>
+        <div class="scorebox">
+          <small>Risk count</small>
+          <strong>19</strong>
+        </div>
+      </div>
+      <div class="sheet-body single">
+        <section class="risk-section">
+      <h3>PROPELLANT TANK</h3>
+      <div class="risk-grid">
+        <article class="risk-card medium">
+      <div class="risk-top">
+        <span class="risk-id">MS310</span>
+        <span class="risk-level">Medium</span>
+      </div>
+      <h4>Overpressure in the tank due to non nominal increase in temperature</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>5</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- 20% ullage by design<br>- Thickness of the tank designed with high safety margin</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS320</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Propellant leakage</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>5</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- High-quality sealing<br>- Stressfull structural tests pre-launch <br>- Pressure and mass monitoring</p></div>
+      <div class="note"><strong>Note:</strong> Severity is 5 due to potential mission loss and safety hazard.</div>
+      
+    </article><article class="risk-card very-low">
+      <div class="risk-top">
+        <span class="risk-id">EN30</span>
+        <span class="risk-level">Very low</span>
+      </div>
+      <h4>Propellant leakage and dispersion in the enviroment</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Environment</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>3</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>High-quality sealing<br>- Stressfull structural test pre-launch<br>- Pressure and mass monitoring <br>- Bio-fuel</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">SF40</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Flashback (ritorno di fiamma) during functional tests</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Safety</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>5</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Uses of flashback arrestors <br>- Capillar design of fluidics</p></div>
+      <div class="note"><strong>Note:</strong> Probability is A because the arrestor is designed to prevent occurrence.</div>
+      
+    </article><article class="risk-card very-low">
+      <div class="risk-top">
+        <span class="risk-id">PE40</span>
+        <span class="risk-level">Very low</span>
+      </div>
+      <h4>Personnel exposure to toxicity</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Personnel</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Strictly fueling procedures</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">PE50</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Propellant explosion or fire during fueling or other ground operations</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Personnel</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>5</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Explosion-proof facilities <br>- Strict fueling procedures <br>- Continuous monitoring of fuel and involved-systems conditions</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS330</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Two phase flow in the line during ignition</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>C</span>
+        <span><b>Severity</b>2</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Execution of propellant settling maneuvers<br>- Thermal subcooling of fluidic lines</p></div>
+      <div class="note"><strong>Note:</strong> Can lead to temporary thruster failure</div>
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">TC170</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Propellant slosh destabilizing spacecraft attitude</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Technical</span>
+        <span><b>Probability</b>C</span>
+        <span><b>Severity</b>3</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Integration of mechanical slosh baffles in tanks. <br>- ADCS control loop tuning with active mass-property tracking.</p></div>
+      
+      
+    </article>
+      </div>
+    </section><section class="risk-section">
+      <h3>THRUSTERS</h3>
+      <div class="risk-grid">
+        <article class="risk-card very-low">
+      <div class="risk-top">
+        <span class="risk-id">MS340</span>
+        <span class="risk-level">Very low</span>
+      </div>
+      <h4>Thruster performance degradation causing loss in pointing accuracy and control inefficiency of RWs.</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>2</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Redundant thrusters (cluster configurationof 8 thrusters)</p></div>
+      <div class="note"><strong>Note:</strong> Being usually gradual and manageable probability to accur is low.</div>
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">TC180</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Loss of a single thruster</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Technical</span>
+        <span><b>Probability</b>C</span>
+        <span><b>Severity</b>2</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Redundancy: over actuated configuration to compensate<br>- Turn off the damaged motor to avoid hazard to other subsystems</p></div>
+      <div class="note"><strong>Note:</strong> Usually nominal (an accepted) risk in a long time mission, design must take it into account and apply redundancy</div>
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS350</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Multiple thruster failures</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>5</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Redundant clusters</p></div>
+      <div class="note"><strong>Note:</strong> Could be acceptable only if the two thrusters are not on the same vertex of the platform</div>
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS360</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Thrusters&#x27; thermal issues (freezing or overheating of propellant/fluidic lines)</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Temperature continously monitored<br>- Thermal control system implemented (insulation, radiators, heat pipes)</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">TC190</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Thruster misalignment (integration errors or structural shift)</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Technical</span>
+        <span><b>Probability</b>D</span>
+        <span><b>Severity</b>2</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Calibration during commissioning <br>- Precise procedure to follow to assembly/integrate<br>- Verification tests after integration</p></div>
+      <div class="note"><strong>Note:</strong> Can lead to more attitude corrections needed</div>
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">TC200</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Static misalignment of thruster vector caused by mechanical integration tolerances</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Technical</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>3</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Integration with shims <br>- Geometric calibration with 3D arm</p></div>
+      
+      
+    </article><article class="risk-card very-low">
+      <div class="risk-top">
+        <span class="risk-id">MS370</span>
+        <span class="risk-level">Very low</span>
+      </div>
+      <h4>Minimum impulse bit higher than designed (poor fine control on attitude control)</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>2</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Proper thrust sizing <br>- Proper interface of ADC and PROPULSION SUBSYSTEMS designed</p></div>
+      <div class="note"><strong>Note:</strong> Can lead to more station keeping and attitude maneuvers needed</div>
+      
+    </article><article class="risk-card very-low">
+      <div class="risk-top">
+        <span class="risk-id">TC200</span>
+        <span class="risk-level">Very low</span>
+      </div>
+      <h4>Plume inpingment on external instrumentations (antennas, solar panels, ADCS external instrumentations)</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Technical</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Proper design in order to prevent structural damages to external instrumentation</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">TC210</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Thruster valve failure (stucked closed / stucked open)</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Technical</span>
+        <span><b>Probability</b>B</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- High reliability valves (space-qualified ) tested for surviving thousands of cycles<br>- Redundant valves in series <br>- Redundant thrusters (paired configuration to provide one torque for each pair)</p></div>
+      <div class="note"><strong>Note:</strong> In both open and closed stuck configuration we lose the thruster. If stuck open, the other redundant valve in series will provide the sealing.</div>
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">SF50</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Premature valve actuation during integration</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Safety</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>5</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Physical arming plugs removed until right before launch. <br>- Strict compliance with safety protocols.</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">SF60</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Thruster firing during ground operations</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Safety</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>5</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Precise operational procedures <br>- Safety procedures in case of emergency</p></div>
+      
+      
+    </article>
+      </div>
+    </section>
+      </div>
+    </article>
+<article class="datasheet" id="thermo-struc">
+      <div class="sheet-head">
+        <div>
+          <h2>THERMO_STRUC</h2>
+          <p class="model">5 identified risks · grouped by subsystem area</p>
+        </div>
+        <div class="scorebox">
+          <small>Risk count</small>
+          <strong>5</strong>
+        </div>
+      </div>
+      <div class="sheet-body single">
+        <section class="risk-section">
+      <h3>THERMO-STRUCTURE</h3>
+      <div class="risk-grid">
+        <article class="risk-card very-low">
+      <div class="risk-top">
+        <span class="risk-id">MS380</span>
+        <span class="risk-level">Very low</span>
+      </div>
+      <h4>Fail heater activation</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- COTS component with space heritage <br>- Redundancy</p></div>
+      
+      
+    </article><article class="risk-card very-low">
+      <div class="risk-top">
+        <span class="risk-id">MS390</span>
+        <span class="risk-level">Very low</span>
+      </div>
+      <h4>Thermocouples failure (no reading or altered reading)</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>4</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- COTS component with space heritage <br>- Redundancy</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">TC220</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Coating degradation</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Technical</span>
+        <span><b>Probability</b>C</span>
+        <span><b>Severity</b>2</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>Thermal analysis performed in EOL regarding optical properties of coatings</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">MS400</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Debries strike</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Mission</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>5</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>External shield prevent major damage from micro-debris population, which is the worst expected for the designed orbital environment</p></div>
+      
+      
+    </article><article class="risk-card low">
+      <div class="risk-top">
+        <span class="risk-id">TC230</span>
+        <span class="risk-level">Low</span>
+      </div>
+      <h4>Structural damage due to vibrations induced by the launcher</h4>
+      <div class="risk-meta">
+        <span><b>Category</b>Technical</span>
+        <span><b>Probability</b>A</span>
+        <span><b>Severity</b>5</span>
+      </div>
+      <div class="mitigation"><strong>Mitigation</strong><p>- Proper vibration isolation<br>- Stressfull vibration testing</p></div>
+      
+      
+    </article>
+      </div>
+    </section>
+      </div>
+    </article>
+</main>
+
+<footer>SPACE SYSTEM LABORATORY – Preliminary Design Review · May 2026</footer>
+</div>
+</body>
+</html>
